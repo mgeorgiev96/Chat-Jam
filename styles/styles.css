@@ -1,0 +1,48 @@
+html,body{
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    background: #b2ebf2;
+    font-family: 'Ubuntu', sans-serif;
+    overflow: hidden;
+}
+h1{
+    font-size: 4rem;
+    padding-right: 40px;
+}
+h1 span{
+    font-size: 7rem;
+    padding-left: 20px;
+}
+a{
+    text-decoration: none;
+    box-shadow: 0 0 10px white;
+    background: #e0f7fa;
+    color: black;
+    font-weight: bold;
+    border-radius: 20px;
+    padding: 15px;
+    font-size: 1.5rem;
+}
+a:hover{
+    transition: 250ms;
+    background: black;
+    color: white;
+}
+.message_container{
+    margin: 15% auto;
+    text-align: center;
+}
+
+@media all and (max-width:800px){
+    h1{
+        font-size: 3rem;
+    }
+    h1 span{
+        font-size: 6rem;
+    }
+    a{
+        font-size: 1.2rem;
+    }
+}

@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./img/logo_remaked.7d61abe4.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <title>Chat Jam</title>
+</head>
+<body>
+    <form action='/api/signup' method="POST">
+        <div class="container">
+            <div class="col-lg-4 mx-auto mt-5 text-center inner_container p-5">
+                <img  src="/img/logo_remaked.7d61abe4.png" alt="logo" class="mb-4"/>
+                <div class="mb-3">
+                    <label for="username" class="form-label mt-3">Email address</label>
+                    <input name="username" type="email" class="form-control mx-auto" id="username" aria-describedby="emailHelp" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input name="password" type="password" class="form-control mx-auto" id="password" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="first_name" class="form-label">First Name</label>
+                    <input name="first_name" type="text" class="form-control mx-auto" id="first_name" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="last_name" class="form-label">Last Name</label>
+                    <input name="last_name" type="text" class="form-control mx-auto" id="last_name" required>
+                  </div>
+                  <button type="submit" class="btn text-uppercase">Sign Up</button>
+                  <br>
+                   <p class="mt-4"><a href="/" class="px-3 py-2 rounded">Login Page</a></p>
+            </div>
+        </div>
+      </form>
+</body>
+<script src="https://kit.fontawesome.com/34d4f625c3.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+</html>
+
+<style>
+body,html{
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #8dcaff;
+    overflow: hidden;
+}
+form{
+    margin-top: 2%;
+}
+img{
+    transform: scale(1.1);
+}
+.container .inner_container{
+    box-shadow: 0 0 20px black;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+}
+.container input{
+    width: 80%;
+}
+.container a{
+    text-decoration: underline;
+    font-size: 1.1rem;
+}
+.container a:visited{
+    color: white;
+}
+.container .google_btn{
+    background: #4c96d7;
+    color: white;
+}
+.container .google_btn:hover{
+    transition: 200ms;
+    background: white;
+    color:#4c96d7;
+}
+.container .btn{
+    background:#4c96d7;
+    color: white;
+    font-weight: bold;
+}
+
+.container .btn:hover{
+    transition: 200ms;
+    transform: scale(0.95);
+}
+.container .btn:active{
+    transition: 200ms;
+    transform: scale(1.05);
+}
+
+</style>
