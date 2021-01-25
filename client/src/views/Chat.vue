@@ -71,11 +71,12 @@ Vue.use(VueCompositionApi)
 import { mapActions, mapGetters } from 'vuex'
 import {reactive} from '@vue/composition-api'
 import axios from 'axios'
+import uniqid from 'uniqid'
 
 export default {
     name: 'Chat',
     components: {Friends,Emoji},
-    computed: mapGetters(['getChatMessage','getSocket','getUser','getSelected']),
+    computed: mapGetters(['getChatMessage','getSocket','getUser','getSelected','getViewProfile']),
     methods: {...mapActions(['changeChatMessage','changeUserInfo','upSelected']),
     loadImage(e){
 
@@ -128,11 +129,25 @@ export default {
             $.ajax(settings).done(function (response) {
                 link =  response.data.link
             }).then(()=>{
-                        this.getSocket.emit('chat',{
-                            message: link,
+                conversationBox.innerHTML += `<li class="${this.getUser.username}" ><img src="${link}"/></li>`
+                for(let i=0;i<conversationBox.children.length;i++){
+                    if(conversationBox.children[i].classList.contains(this.getUser.username)){
+                        conversationBox.children[i].classList.add('user_sending')
+                        conversationBox.children[i].classList.remove('user_sending_back')
+                    }else{
+                        conversationBox.children[i].classList.add('user_sending_back')
+                        conversationBox.children[i].classList.remove('user_sending')
+                }}
+                axios.post('/api/save-chat',{
+                            chat: conversationBox.innerHTML,
                             username: this.getUser.username,
                             user: conversationBox.classList[1],
                             attachment: true
+                }).then(res=>{
+                    this.upSelected(false)
+                    attachment.style.display = 'block'
+                    spinner.style.display = 'none'
+                    this.changeUserInfo(res.data)
                 })
             });
         }
@@ -145,13 +160,26 @@ export default {
     sendMessage(){
         let conversationBox = document.querySelector('.conversation_box')
             if(this.getChatMessage !== ''){
-                this.getSocket.emit('chat',{
-                    message: this.getChatMessage,
+                conversationBox.innerHTML += `<li class="${this.getUser.username}">${this.getChatMessage}</li>`
+                for(let i=0;i<conversationBox.children.length;i++){
+                if(conversationBox.children[i].classList.contains(this.getUser.username)){
+                    conversationBox.children[i].classList.add('user_sending')
+                    conversationBox.children[i].classList.remove('user_sending_back')
+                }else{
+                    conversationBox.children[i].classList.add('user_sending_back')
+                    conversationBox.children[i].classList.remove('user_sending')
+                }}
+                this.upSelected(true)
+                axios.post('/api/save-chat',{
+                    chat: conversationBox.innerHTML,
                     username: this.getUser.username,
                     user: conversationBox.classList[1],
-                    attachment: false
+                    attachment: false,
+                }).then(res=>{
+                    this.changeUserInfo(res.data)
+                    this.upSelected(false)
+                    this.changeChatMessage({action:'entry',message:''})
                 })
-                this.changeChatMessage({action:'entry',message:''})
             }
         },
         insertMessage(e){
@@ -174,37 +202,12 @@ export default {
             }
         }
         return {showEmoji}
+    },data(){
+        return{
+            id: ''
+        }
     },created() {
         let uploadImage = document.querySelector(".uploadImage")
-        
-        this.getSocket.on('chat',(data)=>{
-            let chat_box = document.querySelector('.conversation_box')
-            if(data.attachment === true){
-                chat_box.innerHTML += `<li class='${data.username}'><img class='uploadImage' src=${data.message}/></li>`
-            }else{
-                chat_box.innerHTML += `<li class='${data.username}'>${data.message}</li>`
-            }
-            for(let i=0;i<chat_box.children.length;i++){
-                if(chat_box.children[i].classList.contains(this.getUser.username)){
-                    chat_box.children[i].classList.add('user_sending')
-                    chat_box.children[i].classList.remove('user_sending_back')
-                }else{
-                    chat_box.children[i].classList.add('user_sending_back')
-                    chat_box.children[i].classList.remove('user_sending')
-                }}
-            this.upSelected(true)
-            axios.post('/api/save-chat',{
-                username: data.username,
-                user: data.user,
-                chat: chat_box.innerHTML
-            }).then(()=>{
-                let attachment = document.querySelector('.attachment')
-                let spinner = document.querySelector('.wrap-loader')
-                this.upSelected(false)
-                attachment.style.display = 'block'
-                spinner.style.display = 'none'
-            })
-        })
         window.addEventListener('click',this.openImage)
         window.addEventListener('keydown',this.listenForEnter)
     }
@@ -219,6 +222,13 @@ $width: 15px;
 $height: 15px;
 
 $bounce_height: 30px;
+.emoji_container{
+    width: 25vw;
+    position: absolute;
+    display: none;
+    right: 10px;
+    top: -170px;
+}
 
 .wrap-loader {
   position: absolute;

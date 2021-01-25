@@ -8,12 +8,11 @@ export default new Vuex.Store({
         user: '',
         selected: true,
         selectedPost: false,
-        socket: io.connect('http://localhost:5000'),
         chatMessage: '',
         postMessage: '',
         commentMessage: '',
-        viewProfile: '',
-        profileSelected: ''
+        profileSelected: '',
+        viewProfile: ''
     },
     actions: {
         upSelected({commit},bool){
@@ -85,9 +84,6 @@ export default new Vuex.Store({
         },
         getPostMessage: state=>{
             return state.postMessage
-        },
-        getSocket: state=>{
-            return state.socket
         },
         getUser: state=>{
             return state.user

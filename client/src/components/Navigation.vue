@@ -2,7 +2,7 @@
   <v-card class="cyan lighten-3">
     <v-card-title class="text-center justify-center py-6">
       <h1 class="font-weight-bold white--text py-6">
-        Hello Martin
+        Hello {{getUser.first_name}} {{getUser.last_name}}
       </h1>
     </v-card-title>
 
@@ -87,12 +87,7 @@ export default {
             ]
         })
         return {state,logoutAccount}
-    },
-    created() {
-      axios.get('/api/info').then(res=>{
-            this.changeUserInfo(res.data)
-        })
-    },
+    }
 }
 </script>
 

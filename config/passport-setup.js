@@ -13,9 +13,9 @@ passport.deserializeUser((id,done)=>{
 })
 
 passport.use(new GoogleStrategy({
-    clientSecret: 'gbAfRDQVH7dx-xbOy8rJ3Vvp',
-    clientID: '984651524053-5f3q4tlbgpm686n44c91el4uvn5pbmrk.apps.googleusercontent.com',
-    callbackURL: '/api/google/redirect'
+    clientSecret: process.env.CLIENT_SECRET,
+    clientID: process.env.CLIENT_ID,
+    callbackURL: process.env.CALLBACK_URL
 },(accessToken,refreshToken,profile,done)=>{
     User.findOne({username:profile._json.email}).then(user=>{
         if(user){
@@ -27,8 +27,22 @@ passport.use(new GoogleStrategy({
                 first_name: profile.name.givenName,
                 last_name: profile.name.familyName,
                 posts: [],
-                friends: []
-            }).save().then(()=>done(null,user)).catch(err=>console.log(err))
+                friends: [{
+                    id: 'test@abv.bg',
+                    first_name: 'Test',
+                    last_name: 'Test1'
+                }],
+                notifications: [],
+                chats: []
+            }).save().then(()=>{
+                User.update({username:'test@abv.bg'},{
+                    $push: {friends:{
+                        id: profile._json.email,
+                        first_name: profile.name.givenName,
+                        last_name: profile.name.familyName,
+                    }}
+                }).then(()=>done(null,user)).catch(err=>console.log(err))
+            }).catch(err=>console.log(err))
         }
     }).catch(err=>console.log(err))
 }))

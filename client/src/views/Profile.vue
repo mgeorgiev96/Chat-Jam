@@ -132,8 +132,8 @@
                             </v-form>
                             <v-list>
                                 <v-list-item v-for="comment in post.comments" :key='comment.id' class="post_comment my-2 rounded">
-                                    <v-chip class="cyan white--text title my-5">{{comment.name}}</v-chip>
-                                    <div>{{comment.description}}</div>
+                                    <v-chip class="cyan white--text title pa-2 my-4">{{comment.name}}</v-chip>
+                                    <div class="ml-4">{{comment.description}}</div>
                                 </v-list-item>
                             </v-list>
                         </v-expansion-panel-content>
@@ -281,7 +281,11 @@ export default {
             }
         }
         return {showEmoji}
-    }
+    },created() {
+        axios.get('/api/info').then(res=>{
+            this.changeUserInfo(res.data)
+        })
+    },
 }
 </script>
 
@@ -290,18 +294,24 @@ $width: 15px;
 $height: 15px;
 
 $bounce_height: 30px;
+
+
 .post_comment{
-    border: 1px solid lightgrey;
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
+    box-shadow: 0 0 5px lightgrey;
+    display: inline-block;
+    width: 100%;
+    .v-chip{
+        min-width: 115px;
+    }
 }
 .post_image_container{
     height: 500px;
+    width: 500px;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    transform: scale(0.6);
+    transform: scale(0.7);
+    border: 1px solid black;
 }
 
 .emoji_container{
@@ -398,6 +408,22 @@ $bounce_height: 30px;
 	background-image: -webkit-gradient(linear, 0 0, 0 100%,
 	                   color-stop(.5, rgba(255, 255, 255, .2)),
 					   color-stop(.5, transparent), to(transparent));
+}
+
+@media all and (max-width:1200px){
+    .post_container{
+        width: 80%;
+    }
+}
+@media all and (min-width:1210px){
+    .post_container{
+        width: 60%;
+    }
+}
+@media all and (min-width:1600px){
+    .post_container{
+        width: 40%;
+    }
 }
 
 </style>

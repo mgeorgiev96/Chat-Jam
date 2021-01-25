@@ -74,6 +74,9 @@ export default {
     name: 'UserProfile',
     computed: mapGetters(['getSelectedPost','getViewProfile','getPostMessage','getProfileSelected','getUser']),
     methods: {...mapActions(['upSelectedPost','changePostMessage','changeViewProfile','changeUserInfo']),
+    logProfile(){
+        console.log(this.getViewProfiles)
+    },
     leaveComment(e){
         let decsription = document.querySelector('.comment_content')
         let target = e.target
@@ -105,11 +108,23 @@ $height: 15px;
 
 $bounce_height: 30px;
 .post_comment{
-    border: 1px solid lightgrey;
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
+    box-shadow: 0 0 5px lightgrey;
+    display: inline-block;
+    width: 100%;
+    .v-chip{
+        min-width: 115px;
+    }
 }
+.post_image_container{
+    height: 500px;
+    width: 500px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    transform: scale(0.7);
+    border: 1px solid black;
+}
+
 .post_image_container{
     height: 500px;
     background-position: center;
@@ -213,5 +228,21 @@ $bounce_height: 30px;
 	                   color-stop(.5, rgba(255, 255, 255, .2)),
 					   color-stop(.5, transparent), to(transparent));
 }
+@media all and (max-width:1200px){
+    .post_container{
+        width: 80%;
+    }
+}
+@media all and (min-width:1210px){
+    .post_container{
+        width: 60%;
+    }
+}
+@media all and (min-width:1600px){
+    .post_container{
+        width: 40%;
+    }
+}
+
 
 </style>

@@ -67,11 +67,23 @@ router.post('/signup',(req,res)=>{
                     password: hash,
                     first_name: req.body.first_name,
                     last_name: req.body.last_name,
-                    friends: [],
+                    friends: [{
+                        id: 'test@abv.bg',
+                        first_name: 'Test',
+                        last_name: 'Test1'
+                    }],
                     posts: [],
                     notifications: [],
                     chats: []
-                }).save().then(()=>res.redirect('/')).catch(err=>console.log(err))
+                }).save().then(()=>{
+                    User.update({username:'test@abv.bg'},{
+                        $push: {friends:{
+                            id: req.body.username,
+                            first_name: req.body.first_name,
+                            last_name: req.body.last_name
+                        }}
+                    }).then(()=>res.redirect('/')).catch(err=>console.log(err))
+                }).catch(err=>console.log(err))
             })
         }
     })
@@ -368,16 +380,18 @@ router.post('/leave-comment',(req,res)=>{
 })
 
 router.post("/get-user-profile",(req,res)=>{
-    User.findOne({username:req.body.username}).then(user=>{
-        res.json({
-            username: user.username,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            friends: user.friends,
-            posts: user.posts,
-            notifications: user.notifications,
-            chats: user.chats
-        })
-    }).catch(err=>console.log(err))
+    if(req.body.username){
+        User.findOne({username:req.body.username}).then(user=>{
+            res.json({
+                username: user.username,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                friends: user.friends,
+                posts: user.posts,
+                notifications: user.notifications,
+                chats: user.chats
+            })
+        }).catch(err=>console.log(err))
+    }
 })
 module.exports = router
