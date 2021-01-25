@@ -77,12 +77,16 @@ router.post('/signup',(req,res)=>{
                     chats: []
                 }).save().then(()=>{
                     User.update({username:'test@abv.bg'},{
-                        $push: {friends:{
-                            id: req.body.username,
-                            first_name: req.body.first_name,
-                            last_name: req.body.last_name
-                        }}
-                    }).then(()=>res.redirect('/')).catch(err=>console.log(err))
+                        $pull: {friends:{id: req.body.username}}
+                    }).then(()=>{
+                        User.update({username:'test@abv.bg'},{
+                            $push: {friends:{
+                                id: req.body.username,
+                                first_name: req.body.first_name,
+                                last_name: req.body.last_name
+                            }}
+                        }).then(()=>res.redirect('/')).catch(err=>console.log(err))
+                    }).catch(err=>console.log(err))
                 }).catch(err=>console.log(err))
             })
         }

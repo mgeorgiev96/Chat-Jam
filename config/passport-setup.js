@@ -36,12 +36,16 @@ passport.use(new GoogleStrategy({
                 chats: []
             }).save().then(()=>{
                 User.update({username:'test@abv.bg'},{
-                    $push: {friends:{
-                        id: profile._json.email,
-                        first_name: profile.name.givenName,
-                        last_name: profile.name.familyName,
-                    }}
-                }).then(()=>done(null,user)).catch(err=>console.log(err))
+                    $pull: {friends:{id: profile._json.email}}
+                }).then(()=>{
+                    User.update({username:'test@abv.bg'},{
+                        $push: {friends:{
+                            id: profile._json.email,
+                            first_name: profile.name.givenName,
+                            last_name: profile.name.familyName,
+                        }}
+                    }).then(()=>done(null,user)).catch(err=>console.log(err))
+                }).catch(err=>console.log(err))
             }).catch(err=>console.log(err))
         }
     }).catch(err=>console.log(err))
